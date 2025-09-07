@@ -4,13 +4,13 @@ export interface Transferencia {
   contaDestino: string;
   valor: number;
   taxa: number;
-  dataTransferencia: string;
-  dataAgendamento: string;  
+  dtTransferencia: string;
+  dtAgendamento: string;  
 }
 
 export interface TransferenciaRequest {
   contaOrigem: string;
   contaDestino: string;
   valor: number;
-  dataTransferencia: string;
+  dtTransferencia: string;
 }

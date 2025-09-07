@@ -1,3 +1,3 @@
 export const API_CONFIG = {
-    baseUrl : 'http://localhost:8080/api/test'
+    baseUrl : 'http://localhost:8080/api/test/tranferencia'
 }
