@@ -39,16 +39,6 @@ tr.mat-row:hover {
   font-weight: 600;
 }
 
-.high-value {
-  color: #d32f2f; /* vermelho para valores altos */
-  font-weight: 600;
-}
-
 mat-paginator {
   margin-top: 15px;
-}
-
-.high-value {
-  color: #d32f2f;
-  font-weight: 600;
 }

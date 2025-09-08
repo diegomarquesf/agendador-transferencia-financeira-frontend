@@ -1,35 +1,39 @@
 <div class="container">
   <h2>Agendar Transferência</h2>
+
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
-
-    <mat-form-field appearance="outline">
-      <mat-label>Conta Origem</mat-label>
+    <mat-form-field appearance="fill">
+      <mat-label>Conta de Origem</mat-label>
       <input matInput formControlName="contaOrigem" placeholder="Digite a conta origem">
-      <mat-error *ngIf="form.get('contaOrigem')?.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="form.get('contaOrigem')?.hasError('pattern')">Deve ter 10 dígitos ou X</mat-error>
+      <mat-error *ngIf="form.get('contaOrigem')?.hasError('required')"> O campo "Conta de Origem" é obrigatório! </mat-error>
+      <mat-error *ngIf="form.get('contaOrigem')?.hasError('pattern')">O campo 'Conta de Origem' deve ter 10 dígitos!</mat-error>
+      <mat-error *ngIf="form.get('contaOrigem')?.hasError('backend')"> {{ form.get('contaOrigem')?.getError('backend') }} </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Conta Destino</mat-label>
+    <mat-form-field appearance="fill">
+      <mat-label>Conta de Destino</mat-label>
       <input matInput formControlName="contaDestino" placeholder="Digite a conta destino">
-      <mat-error *ngIf="form.get('contaDestino')?.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="form.get('contaDestino')?.hasError('pattern')">Deve ter 10 dígitos ou X</mat-error>
+      <mat-error *ngIf="form.get('contaDestino')?.hasError('required')">O campo 'Conta de Destino' é obrigatório!</mat-error>
+      <mat-error *ngIf="form.get('contaDestino')?.hasError('pattern')">O campo 'Conta de Destino' deve ter 10 dígitos!</mat-error>
+      <mat-error *ngIf="form.get('contaDestino')?.hasError('backend')">{{ form.get('contaDestino')?.getError('backend') }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="fill">
       <mat-label>Valor (R$)</mat-label>
       <input matInput type="number" formControlName="valor" placeholder="Ex: 100.00">
-      <mat-error *ngIf="form.get('valor')?.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="form.get('valor')?.hasError('min')">Valor deve ser maior que 0,01</mat-error>
+      <mat-error *ngIf="form.get('valor')?.hasError('required')">O campo 'Valor (R$)' é obrigatório!</mat-error>
+      <mat-error *ngIf="form.get('valor')?.hasError('min')">O campo 'Valor (R$)' deve ser maior que 0,01</mat-error>
+      <mat-error *ngIf="form.get('valor')?.hasError('backend')">{{ form.get('valor')?.getError('backend') }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="fill">
       <mat-label>Data de Transferência</mat-label>
       <input matInput [matDatepicker]="picker" [min]="today" formControlName="dtTransferencia">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="form.get('dtTransferencia')?.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="form.get('dtTransferencia')?.hasError('futureDate')">Data deve ser hoje ou futura</mat-error>
+      <mat-error *ngIf="form.get('dtTransferencia')?.hasError('required')">O campo 'Data de Transferência' é obrigatório!</mat-error>
+      <mat-error *ngIf="form.get('dtTransferencia')?.hasError('futureDate')">O campo 'Data de Transferência' deve ser hoje ou futura!</mat-error>
+      <mat-error *ngIf="form.get('dtTransferencia')?.hasError('backend')">{{ form.get('dtTransferencia')?.getError('backend') }}</mat-error>
     </mat-form-field>
 
     <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || submitting">

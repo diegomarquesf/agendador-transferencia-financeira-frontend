@@ -4,12 +4,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, DateAdapter } from '@angular/material/core';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
-import { TransferenciaServices } from '../../../services/transferencia.services'
-import { TransferenciaRequest } from '../../../models/transferencia/transferencia';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { TransferenciaServices } from '../../../services/transferencia.services';
 import { Router } from '@angular/router';
+
+export const APP_DATE_FORMATS = {
+  parse: { dateInput: 'DD/MM/YYYY' },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-agendar-transferencia',
@@ -21,8 +31,12 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     MatSnackBarModule
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
   ],
   templateUrl: './agendar-transferencia.html',
   styleUrls: ['./agendar-transferencia.css']
@@ -47,33 +61,47 @@ export class AgendarTransferencia {
   }
 
   futureDateValidator(control: AbstractControl): ValidationErrors | null {
-    if (!control.value) return null;
-    const selectedDate = new Date(control.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return selectedDate >= today ? null : { futureDate: true };
+    if (control.value) {
+      const selectedDate = control.value; 
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      return selectedDate >= today ? null : { futureDate: true };
+    }
+    
+    return null;
   }
 
   onSubmit() {
     if (this.form.invalid || this.submitting) return;
-    
-    const request: TransferenciaRequest = {
+
+    this.submitting = true;
+    const request = {
       ...this.form.value,
-      dtTransferencia: (this.form.value.dtTransferencia as Date).toISOString().split('T')[0]
+      dtTransferencia: (this.form.value.dtTransferencia as any).format('YYYY-MM-DD')
     };
 
-     this.submitting = true;
-    
     this.service.createAgendamento(request).subscribe({
       next: () => {
-        this.snackBar.open('Agendamento realizado com sucesso!', 'Fechar', { duration: 5000 });
+        this.snackBar.open('O agendamento foi realizado com sucesso!', 'Fechar', {
+          duration: 7000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snack-bar-success']
+        });
         this.form.reset();
         this.router.navigate(['/extrato']);
+        this.submitting = false;
       },
       error: (err) => {
-        const message = err.error?.message || 'Falha ao agendar';
-        this.snackBar.open(message, 'Fechar', { duration: 5000 });
         this.submitting = false;
+        const mensagem = err.error?.message || 'Falha ao agendar';
+
+        this.snackBar.open(`Erro: ${mensagem}`, 'Fechar', {
+          duration: 7000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snack-bar-error']
+        });
       },
       complete: () => this.submitting = false
     });
