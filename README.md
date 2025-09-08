@@ -1,59 +1,90 @@
-# AgendadorTransferenciaFrontend
+**Agendador de Transferência Financeira**
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.
+🏛 **Arquitetura e Decisões**
 
-## Development server
+**Backend**
 
-To start a local development server, run:
+-Framework: Spring Boot 2
+-Linguagem: Java 11
 
-```bash
+**Organização:**
+
+-Camadas separadas: entities, repositories, services, resources (controllers)
+
+-DTOs e mappers para separar modelo de domínio e payloads
+
+-Regras de negócio isoladas em services
+
+-Exceções customizadas (TaxaNaoAplicavelException) para validações de regra de negócio
+
+-Dados iniciais populados via classe de configuração DataInicializaConfig
+
+**Frontend**
+
+-Framework: Angular 17
+
+-Componentes: Standalone Components
+
+-Validação: Reactive Forms
+
+-UI: Angular Material para formulários, tabelas e snackbars
+
+-Mensagens: Snackbars customizados para sucesso e erro
+
+-Datas: Formatação com Moment.js (DD/MM/YYYY)
+
+**Banco de Dados**
+
+-H2 para desenvolvimento e testes
+
+🛠 **Tecnologias e Versões**
+
+-Java: 11
+
+-Spring Boot: 2
+
+-JPA
+
+-Maven
+
+-MapStruct
+
+-H2 Database
+
+-Angular
+
+-Angular Material
+
+🚀 **Executando o Backend**
+
+**Clone o repositório:**
+
+git clone https://github.com/diegomarquesf/agendador-transferencia-financeira-spring.git
+
+-Abra no IDE de sua preferência (IntelliJ, Eclipse ou VS Code)
+
+-Execute como Spring Boot Application
+
+-API disponível em: http://localhost:8080
+
+🚀 **Executando o Frontend**
+
+**Clone o repositório:**
+
+git clone https://github.com/diegomarquesf/agendador-transferencia-financeira-frontend.git
+
+Instale as dependências:
+npm install
+
+**Execute o projeto:**
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Acesse: http://localhost:4200
+Certifique-se que o backend está rodando em http://localhost:8080
 
-## Code scaffolding
+💾 **Dados Iniciais**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+-Taxas e agendamentos são populados automaticamente ao iniciar o backend
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+-As regras de taxa seguem o padrão definido na tabela de negócio, garantindo consistência em testes e demonstrações.
